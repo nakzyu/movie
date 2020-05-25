@@ -7,7 +7,6 @@ const MovieCard = ({ title, summary, rating }) => {
       <div>{summary}</div>
       <div>{summary}</div>
       <div>{summary}</div>
-      <div>{summary}</div>
       <div>{rating}</div>
     </li>
   );
