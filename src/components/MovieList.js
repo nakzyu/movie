@@ -8,6 +8,9 @@ const MovieList = () => {
   const [movieList, setMovieList] = useState([]);
   const [pageCount, setPageCount] = useState(1);
   const [sortBy, setSortBy] = useState();
+  const [filterdList, setFilterdList] = useState([]);
+  const [isFilterOn, setIsFilterOn] = useState(false);
+  const [leastRating, setLeastRating] = useState(0);
 
   const fetchMovie = async () => {
     let url = "";
@@ -32,23 +35,34 @@ const MovieList = () => {
     fetchMovie();
   }, [sortBy, pageCount]);
 
-  const filterByRating = (rating) => {};
+  const filterByRating = (rating) => {
+    setIsFilterOn(true);
+    setLeastRating(rating);
+    setFilterdList(movieList.filter((movie) => movie.rating >= rating));
+  };
+
+  useEffect(() => {
+    setFilterdList(movieList.filter((movie) => movie.rating >= leastRating));
+  }, [movieList, leastRating]);
 
   return (
     <div className="movie-list">
       <div className="sorting-filter-container">
         <div className="sorting">
           {/* title,year,rating 순으로 정렬하는 div */}
-          {["title", "year", "rating"].map((item) => (
+          {["title", "year", "rating"].map((sortType) => (
             <div
               className={`sorting-type`}
               onClick={() => {
-                setMovieList([]);
-                setSortBy(item);
-                setPageCount(1);
+                if (sortBy !== sortType) {
+                  // 현재 sortBy 와 선택한 sortType이 다를때만 실행
+                  setMovieList([]);
+                  setSortBy(sortType);
+                  setPageCount(1);
+                }
               }}
             >
-              {item}
+              {sortType}
             </div>
           ))}
         </div>
@@ -74,9 +88,9 @@ const MovieList = () => {
         }}
       >
         <ul>
-          {movieList.map((movie) => (
-            <MovieCard {...movie} />
-          ))}
+          {isFilterOn
+            ? filterdList.map((movie) => <MovieCard {...movie} />)
+            : movieList.map((movie) => <MovieCard {...movie} />)}
         </ul>
       </BottomScrollListener>
     </div>
