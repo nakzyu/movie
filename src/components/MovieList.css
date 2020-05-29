@@ -26,3 +26,8 @@ ul {
 .filter {
   display: flex;
 }
+
+.sorting-type {
+  background-color: burlywood;
+  margin: 10px;
+}
