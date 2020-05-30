@@ -18,14 +18,14 @@ const MovieCard = ({
         <img src={medium_cover_image} alt="medium_cover_image" />
       </div>
       <div className="movie-content">
-        <div className="movie-description">
+        <div className="movie-title_rating">
           <strong>{title}</strong>
           <div>{rating}</div>
         </div>
-        <div className="movie-content-summary">
+        <div className="movie-content-description">
           <div>{summary}</div>
           <Link to={`/movie/${id}`}>
-            <div className="plus">자세히보기</div>
+            <div className="plus">자세히 보기</div>
           </Link>
         </div>
       </div>
