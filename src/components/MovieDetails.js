@@ -11,7 +11,7 @@ const MovieDetails = ({ id }) => {
   }, []);
 
   const fetchMovie = async () => {
-    let url = `https://yts.mx/api/v2/movie_details.json?movie_id=${id}`;
+    const url = `https://yts.mx/api/v2/movie_details.json?movie_id=${id}`;
     try {
       await axios.get(url).then((res) => {
         setMovie(res.data.data.movie);
