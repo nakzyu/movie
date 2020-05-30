@@ -1,4 +1,31 @@
 .movie-card {
   margin: 20px;
   display: flex;
+  padding-bottom: 20px;
+  border-bottom: 2px solid rgb(233, 231, 231);
+}
+
+.movie-content {
+  margin: 0 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.movie-description {
+  display: flex;
+  justify-content: space-between;
+}
+
+.movie-content-summary {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  margin-top: 10px;
+}
+
+.plus {
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-end;
 }

@@ -21,6 +21,9 @@ const MovieList = () => {
     try {
       await axios.get(url).then((res) => {
         setMovieList((oldArr) => {
+          // 선택된 필터로 movie가 없을시 기존 배열과 noMovie를 리턴
+          if (!res.data.data.movies) return [...oldArr, ...[{ noMovie: true }]];
+          // 연속으로 sortBy를 바꿨을때 Movielist가 합쳐지는것을 방지
           if (pageCount === 1) return [...res.data.data.movies];
           else return [...oldArr, ...res.data.data.movies];
         });
@@ -38,10 +41,11 @@ const MovieList = () => {
     <div className="movie-list">
       <div className="sorting-filter-container">
         <div className="sorting">
-          {/* title,year,rating 순으로 정렬하는 div */}
           {["title", "year", "rating"].map((sortType) => (
             <div
-              className="sorting-type"
+              className={`sorting-type ${
+                sortBy === sortType ? "tap-active" : ""
+              }`}
               onClick={() => {
                 if (sortBy !== sortType) {
                   // 현재 sortBy 와 선택한 sortType이 다를때만 실행
@@ -56,11 +60,13 @@ const MovieList = () => {
           ))}
         </div>
         <div className="filter">
-          <div className="quality-filter">
-            최소별점
-            <ul>
+          <div className="quality-filter dropdown">
+            <div className={`dropbtn ${qualityFilter ? "tap-active" : ""}`}>
+              화질{qualityFilter}
+            </div>
+            <div className="dropdown-content">
               {["720p", "1080p", "2160p", "3D"].map((quality) => (
-                <li
+                <div
                   onClick={() => {
                     if (quality !== qualityFilter) {
                       // 현재 quality 와 선택한 qualityFilter가 다를때만 실행
@@ -71,15 +77,21 @@ const MovieList = () => {
                   }}
                 >
                   {quality}
-                </li>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
-          <div className="minimum-rating-filter">
-            최소별점
-            <ul>
+          <div className="minimum-rating-filter dropdown">
+            <div
+              className={`dropbtn ${
+                Number.isInteger(ratingFilter) ? "tap-active" : ""
+              }`}
+            >
+              최소 별점{ratingFilter}
+            </div>
+            <div className="dropdown-content">
               {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((rating) => (
-                <li
+                <div
                   onClick={() => {
                     if (ratingFilter !== rating) {
                       // 현재 rating 과 선택한 ratingfilter가 다를때만 실행
@@ -90,9 +102,9 @@ const MovieList = () => {
                   }}
                 >
                   {rating}
-                </li>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
         </div>
       </div>
