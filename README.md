@@ -16,16 +16,16 @@ npm start
     .
     ├── src
     │   ├── components
-    │       ├── Header              # 모든 페이지 위에 표시되는 헤더
-    │       ├── HomeContent         # Home 페이지에 표시되는 내용
-    │       ├── MovieList           # 영화정보를 fetch하고, sorting 및 filter 관리
-    │       ├── MovieCard           # MovieList에서 받아온 개별 영화정보를 렌더
-    │       ├── MovieDetails        # 자세한 Movie 정보를 렌더
+    │   │   ├── Header              # 모든 페이지 위에 표시되는 헤더
+    │   │   ├── HomeContent         # Home 페이지에 표시되는 내용
+    │   │   ├── MovieList           # 영화정보를 fetch하고, sorting 및 filter 관리
+    │   │   ├── MovieCard           # MovieList에서 받아온 개별 영화정보를 렌더
+    │   │   └── MovieDetails        # 자세한 Movie 정보를 렌더
     │   ├── pages
-    │       ├── Home                # /
-    │       ├── Movies              # /movies
-    │       ├── Movie               # /movie/:id
-    │   ├── App                     # 라우팅 처리
+    │   │   ├── Home                # /
+    │   │   ├── Movies              # /movies
+    │   │   └── Movie               # /movie/:id
+    │   └── App                     # 라우팅 처리
     └── README.md
 
 ## 기능
