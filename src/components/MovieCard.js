@@ -11,7 +11,7 @@ const MovieCard = ({
   id,
 }) => {
   return noMovie ? (
-    <div>no movie</div>
+    <div className="error">No more data for selected option.</div>
   ) : (
     <li className="movie-card">
       <div className="movie-img-wrapper">
