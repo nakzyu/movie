@@ -8,23 +8,22 @@ const MovieList = () => {
   const [movieList, setMovieList] = useState([]);
   const [pageCount, setPageCount] = useState(1);
   const [sortBy, setSortBy] = useState();
-  const [filterdList, setFilterdList] = useState([]);
-  const [isFilterOn, setIsFilterOn] = useState(false);
-  const [leastRating, setLeastRating] = useState(0);
+  const [qualityFilter, setQualityFilter] = useState();
+  const [ratingFilter, setRatingFilter] = useState();
 
   const fetchMovie = async () => {
-    let url = "";
+    let url = `https://yts.mx/api/v2/list_movies.json?limit=4&page=${pageCount}`;
 
-    if (sortBy) {
-      url = `https://yts.mx/api/v2/list_movies.json?limit=4&page=${pageCount}&sort_by=${sortBy}`;
-    } else {
-      url = `https://yts.mx/api/v2/list_movies.json?limit=4&page=${pageCount}`;
-    }
+    if (sortBy) url += `&sort_by=${sortBy}`;
+    if (qualityFilter) url += `&quality=${qualityFilter}`;
+    if (ratingFilter) url += `&minimum_rating=${ratingFilter}`;
 
     try {
-      // fetch 될때까지 await
       await axios.get(url).then((res) => {
-        setMovieList((oldArr) => [...oldArr, ...res.data.data.movies]);
+        setMovieList((oldArr) => {
+          if (pageCount === 1) return [...res.data.data.movies];
+          else return [...oldArr, ...res.data.data.movies];
+        });
       });
     } catch (err) {
       console.log(err);
@@ -33,17 +32,7 @@ const MovieList = () => {
 
   useEffect(() => {
     fetchMovie();
-  }, [sortBy, pageCount]);
-
-  const filterByRating = (rating) => {
-    setIsFilterOn(true);
-    setLeastRating(rating);
-    setFilterdList(movieList.filter((movie) => movie.rating >= rating));
-  };
-
-  useEffect(() => {
-    setFilterdList(movieList.filter((movie) => movie.rating >= leastRating));
-  }, [movieList, leastRating]);
+  }, [sortBy, pageCount, ratingFilter, qualityFilter]);
 
   return (
     <div className="movie-list">
@@ -52,7 +41,7 @@ const MovieList = () => {
           {/* title,year,rating 순으로 정렬하는 div */}
           {["title", "year", "rating"].map((sortType) => (
             <div
-              className={`sorting-type`}
+              className="sorting-type"
               onClick={() => {
                 if (sortBy !== sortType) {
                   // 현재 sortBy 와 선택한 sortType이 다를때만 실행
@@ -67,18 +56,44 @@ const MovieList = () => {
           ))}
         </div>
         <div className="filter">
-          <label for="selecte-filter">최소별점:</label>
-          <ul>
-            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((rating) => (
-              <li
-                onClick={() => {
-                  filterByRating(rating);
-                }}
-              >
-                {rating}
-              </li>
-            ))}
-          </ul>
+          <div className="quality-filter">
+            최소별점
+            <ul>
+              {["720p", "1080p", "2160p", "3D"].map((quality) => (
+                <li
+                  onClick={() => {
+                    if (quality !== qualityFilter) {
+                      // 현재 quality 와 선택한 qualityFilter가 다를때만 실행
+                      setMovieList([]);
+                      setQualityFilter(quality);
+                      setPageCount(1);
+                    }
+                  }}
+                >
+                  {quality}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="minimum-rating-filter">
+            최소별점
+            <ul>
+              {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((rating) => (
+                <li
+                  onClick={() => {
+                    if (ratingFilter !== rating) {
+                      // 현재 rating 과 선택한 ratingfilter가 다를때만 실행
+                      setMovieList([]);
+                      setRatingFilter(rating);
+                      setPageCount(1);
+                    }
+                  }}
+                >
+                  {rating}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
       <BottomScrollListener
@@ -88,9 +103,9 @@ const MovieList = () => {
         }}
       >
         <ul>
-          {isFilterOn
-            ? filterdList.map((movie) => <MovieCard {...movie} />)
-            : movieList.map((movie) => <MovieCard {...movie} />)}
+          {movieList.map((movie) => (
+            <MovieCard {...movie} />
+          ))}
         </ul>
       </BottomScrollListener>
     </div>
