@@ -43,6 +43,6 @@ npm start
 
 - "axios": "^0.19.2"
 - "react-router-dom": "^5.2.0"
+  <br/>페이지 라우팅을 위해 사용
 - "react-bottom-scroll-listener": "^4.0.0"
-  <br/>
-  스크롤이 페이지의 끝에 도달했는지 확인하기 위해 사용
+  <br/>스크롤이 페이지의 끝에 도달했는지 확인하기 위해 사용

@@ -43,6 +43,7 @@ const MovieList = () => {
         <div className="sorting">
           {["title", "year", "rating"].map((sortType) => (
             <div
+              key={sortType}
               className={`sorting-type ${
                 sortBy === sortType ? "tap-active" : ""
               }`}
@@ -67,6 +68,7 @@ const MovieList = () => {
             <div className="dropdown-content">
               {["720p", "1080p", "2160p", "3D"].map((quality) => (
                 <div
+                  key={quality}
                   onClick={() => {
                     if (quality !== qualityFilter) {
                       // 현재 quality 와 선택한 qualityFilter가 다를때만 실행
@@ -92,6 +94,7 @@ const MovieList = () => {
             <div className="dropdown-content">
               {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((rating) => (
                 <div
+                  key={rating}
                   onClick={() => {
                     if (ratingFilter !== rating) {
                       // 현재 rating 과 선택한 ratingfilter가 다를때만 실행
@@ -116,7 +119,7 @@ const MovieList = () => {
       >
         <ul>
           {movieList.map((movie) => (
-            <MovieCard {...movie} />
+            <MovieCard key={movie.id} {...movie} />
           ))}
         </ul>
       </BottomScrollListener>
